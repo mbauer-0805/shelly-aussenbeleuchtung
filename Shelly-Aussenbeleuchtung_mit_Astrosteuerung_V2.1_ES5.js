@@ -1,50 +1,49 @@
 /**
  * Shelly-Aussenbeleuchtung_mit_Astrosteuerung_V2.1_ES5
  * ES5 compatible version for Shelly Plus relay devices.
- * 
- * Konfiguration mit Kommentaren und Erklärungen.
+ *  * Konfiguration mit Kommentaren und ErklÃ¤rungen.
  */
 
-// Konfigurations-Objekt für das Skript
+// Konfigurations-Objekt fÃ¼r das Skript
 var CONFIG = {
-  // Debug-Modus: Wenn true, werden zusätzliche Log-Ausgaben angezeigt
+  // Debug-Modus: Wenn true, werden zusÃ¤tzliche Log-Ausgaben angezeigt
   debug: false,
 
-  // Die ID des zu steuernden Relais (meist 0 für das erste Relais)
+  // Die ID des zu steuernden Relais (meist 0 fÃ¼r das erste Relais)
   relayId: 0,
 
-  // Die Script-ID des aktuellen Skripts (wird automatisch ermittelt, falls möglich)
+  // Die Script-ID des aktuellen Skripts (wird automatisch ermittelt, falls mÃ¶glich)
   scriptId: (typeof Shelly !== "undefined" && typeof Shelly.getCurrentScriptId === "function")
     ? Shelly.getCurrentScriptId() : 1,
 
-  // Standortdaten für die Berechnung von Sonnenaufgang/-untergang (Latitude, Longitude)
+  // Standortdaten fÃ¼r die Berechnung von Sonnenaufgang/-untergang (Latitude, Longitude)
   location: { 
     lat: "51.11829868440072", // Breitengrad
-    lng: "9.533486384966086"  // Längengrad
+    lng: "9.533486384966086"  // LÃ¤ngengrad
   },
 
-  // Definition, welche astronomischen Ereignisse als Referenz für die Steuerung genutzt werden
-  // Mögliche Optionen für morning/evening:
+  // Definition, welche astronomischen Ereignisse als Referenz fÃ¼r die Steuerung genutzt werden
+  // MÃ¶gliche Optionen fÃ¼r morning/evening:
   // "sunrise"                (Sonnenaufgang)
-  // "civil_begin"            (Beginn der bürgerlichen Dämmerung)
-  // "nautical_begin"         (Beginn der nautischen Dämmerung)
-  // "astronomical_begin"     (Beginn der astronomischen Dämmerung)
+  // "civil_begin"            (Beginn der bÃ¼rgerlichen DÃ¤mmerung)
+  // "nautical_begin"         (Beginn der nautischen DÃ¤mmerung)
+  // "astronomical_begin"     (Beginn der astronomischen DÃ¤mmerung)
   // "sunset"                 (Sonnenuntergang)
-  // "civil_end"              (Ende der bürgerlichen Dämmerung)
-  // "nautical_end"           (Ende der nautischen Dämmerung)
-  // "astronomical_end"       (Ende der astronomischen Dämmerung)
+  // "civil_end"              (Ende der bÃ¼rgerlichen DÃ¤mmerung)
+  // "nautical_end"           (Ende der nautischen DÃ¤mmerung)
+  // "astronomical_end"       (Ende der astronomischen DÃ¤mmerung)
   twilight: { 
-    morning: "sunrise",     // Referenz für Morgen-Ereignis
-    evening: "civil_end"    // Referenz für Abend-Ereignis
+    morning: "sunrise",     // Referenz fÃ¼r Morgen-Ereignis
+    evening: "civil_end"    // Referenz fÃ¼r Abend-Ereignis
   },
 
-  // Zusätzliche Schutzmechanismen für die Schaltlogik
+  // ZusÃ¤tzliche Schutzmechanismen fÃ¼r die Schaltlogik
   guards: { 
     morningRequireRefAfterOn: true,   // Licht morgens nur einschalten, wenn Referenzzeit (z.B. Sonnenaufgang) nach geplanter Einschaltzeit liegt
     eveningRequireRefBeforeOff: true  // Licht abends nur ausschalten, wenn Referenzzeit (z.B. Sonnenuntergang) vor geplanter Ausschaltzeit liegt
   },
 
-  // Zeitpläne für Werktage und Wochenenden
+  // ZeitplÃ¤ne fÃ¼r Werktage und Wochenenden
   schedules: {
     // Werktag-Zeitplan
     weekday: { 
@@ -78,14 +77,14 @@ var CONFIG = {
     }
   },
 
-  // Schlüssel für die interne Speicherung von Zeitwerten (Key-Value-Store)
+  // SchlÃ¼ssel fÃ¼r die interne Speicherung von Zeitwerten (Key-Value-Store)
   kvsKeys: {
     lastEveOn: "ab_last_eve_on_hhmm",        // Letzte Einschaltzeit am Abend (hh:mm)
     lastMornOff: "ab_last_morn_off_hhmm",    // Letzte Ausschaltzeit am Morgen (hh:mm)
     lastSuccessDate: "ab_last_success_date"  // Datum des letzten erfolgreichen Updates
   },
 
-  // HTTP-Timeout für die Abfrage der Sonnenaufgang/-untergangszeiten (in ms)
+  // HTTP-Timeout fÃ¼r die Abfrage der Sonnenaufgang/-untergangszeiten (in ms)
   httpTimeout: 10000,
 
   // Maximale Anzahl von Wiederholungen bei HTTP-Fehlern
@@ -94,10 +93,10 @@ var CONFIG = {
   // Wartezeit zwischen HTTP-Wiederholungen (in ms)
   retryDelay: 2000,
 
-  // Verzögerung nach dem Start des Skripts, bevor die erste Planung erfolgt (in ms)
+  // VerzÃ¶gerung nach dem Start des Skripts, bevor die erste Planung erfolgt (in ms)
   startupDelay: 1000,
 
-  // Timeout für RPC-Aufrufe (in ms)
+  // Timeout fÃ¼r RPC-Aufrufe (in ms)
   rpcTimeout: 5000
 };
 
@@ -470,7 +469,7 @@ function printCurrentScheduleStatus() {
         try {
           var status = j.enable ? "EN" : "DIS";
           var method = (j.calls && j.calls[0]) ? j.calls[0].method : "?";
-          print("• #" + j.id + " " + status + " " + j.timespec + " " + method);
+          print("Â• #" + j.id + " " + status + " " + j.timespec + " " + method);
         } catch (ex) {}
       }
     } else { print("No jobs"); }
